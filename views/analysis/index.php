@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+
 ?>
 
 
@@ -16,12 +17,23 @@ use yii\helpers\Html;
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th></th>
                 </tr>
                 
                 <?php foreach ($collection as $record): ?>
                     <tr>
-                        <td><?= $record->id ?></td>
-                        <td><?= Html::encode($record->name) ?></td>
+                        <td><?= Html::a($record->id, ['analysis/view', 'id' => $record->id]) ?></td>
+                        <td><?= Html::a(Html::encode($record->name), ['analysis/view', 'id' => $record->id]) ?></td>
+                        <td>
+                            <?= Html::a('x', ['analysis/delete', 'id' => $record->id],
+                                    [
+                                        'class' => 'btn btn-default btn-xs',
+                                        'data' => [
+                                            'confirm' => "Are you sure you want to delete record?"
+                                        ]
+                                    ]
+                            ) ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 

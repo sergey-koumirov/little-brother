@@ -37,7 +37,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Analysises', 'url' => ['/analysis/index']],
-            ['label' => 'Add Characters', 'url' => ['/character/add']],
+            ['label' => 'Add Characters', 'url' => ['/character/add-batch']],
         ],
     ]);
     NavBar::end();

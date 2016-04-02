@@ -43,7 +43,12 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-            ],
+                'POST <controller:[\w-]+>s' => '<controller>/create',
+                'PUT <controller:[\w-]+>/<id:\d+>'    => '<controller>/update',
+                '<controller:[\w-]+>/<id:\d+>/delete' => '<controller>/delete',
+                '<controller:[\w-]+>/<id:\d+>/view'   => '<controller>/view',
+                '<controller:[\w-]+>/index' => '<controller>/index',                
+            ]
         ],        
     ],
     'defaultRoute' => 'analysis/index',
