@@ -5,12 +5,13 @@ server {
     listen [::]:8088 default_server ipv6only=on;
 
     root /home/gopher/eve/little-brother/web;
-    index index.php index.html index.htm;
+    set $yii_bootstrap "index.php";
 
     server_name localhost;
 
     location / {
-        try_files $uri $uri/ =404;
+        index  index.html $yii_bootstrap;
+        try_files $uri $uri/ /$yii_bootstrap?$args;
     }
 
     error_page 404 /404.html;
@@ -30,5 +31,11 @@ server {
 }
 
 
+
 2. nginx restart ubuntu
 sudo service nginx restart
+
+3. migrate DB
+cd root
+./yii migrate
+./yii migrate/down
