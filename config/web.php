@@ -50,7 +50,14 @@ $config = [
                 '<controller:[\w-]+>/<id:\d+>/data'   => '<controller>/data',
                 '<controller:[\w-]+>/index' => '<controller>/index',                
             ]
-        ],        
+        ],      
+        'resque' => [
+            'class' => '\resque\RResque',
+            'server' => 'localhost',     // Redis server address
+            'port' => '6379',            // Redis server port
+            'database' => 0,             // Redis database number
+            'password' => '',            // Redis password auth, set to '' or null when no auth needed
+        ],
     ],
     'defaultRoute' => 'analysis/index',
     'params' => $params,
