@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-
 ?>
 
 
@@ -8,7 +7,7 @@ use yii\helpers\Html;
     <div class="row">
         <div class="col-sm-3">
             <h4>Analysises</h3>
-            <?= Html::a('add', ['/analysis/new'], ['class'=>'btn btn-primary btn-xs']) ?>
+            <?= Html::a('new', ['/analysis/new'], ['class'=>'btn btn-primary btn-xs']) ?>
         </div>      
     </div>  
     <div class="row">
@@ -17,6 +16,8 @@ use yii\helpers\Html;
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>From</th>
+                    <th>To</th>
                     <th></th>
                 </tr>
                 
@@ -24,6 +25,8 @@ use yii\helpers\Html;
                     <tr>
                         <td><?= Html::a($record->id, ['analysis/view', 'id' => $record->id]) ?></td>
                         <td><?= Html::a(Html::encode($record->name), ['analysis/view', 'id' => $record->id]) ?></td>
+                        <td><?= Html::a(Html::encode($record->date_from), ['analysis/view', 'id' => $record->id]) ?></td>
+                        <td><?= Html::a(Html::encode($record->date_to), ['analysis/view', 'id' => $record->id]) ?></td>
                         <td>
                             <?= Html::a('x', ['analysis/delete', 'id' => $record->id],
                                     [

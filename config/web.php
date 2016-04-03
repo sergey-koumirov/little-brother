@@ -43,10 +43,11 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                'POST <controller:[\w-]+>s' => '<controller>/create',
-                'PUT <controller:[\w-]+>/<id:\d+>'    => '<controller>/update',
+                'POST <controller:[\w-]+>' => '<controller>/create',
+                '<controller:[\w-]+>/<id:\d+>/update' => '<controller>/update',
                 '<controller:[\w-]+>/<id:\d+>/delete' => '<controller>/delete',
                 '<controller:[\w-]+>/<id:\d+>/view'   => '<controller>/view',
+                '<controller:[\w-]+>/<id:\d+>/data'   => '<controller>/data',
                 '<controller:[\w-]+>/index' => '<controller>/index',                
             ]
         ],        
