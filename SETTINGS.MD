@@ -53,3 +53,11 @@ php composer.phar install
 
 redis-server
 QUEUE=* ./yii resque start
+
+6. eve api lib (yapeal)
+sudo apt-get install php5-curl
+sudo apt-get install php5-xsl
+sudo apt-get install php5-tidy
+
+cd ./vendor/yapeal/yapeal
+php bin/yc D:I -u root -p root

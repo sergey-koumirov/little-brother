@@ -6,7 +6,7 @@ use yii\helpers\Html;
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-            <h4>Analysises</h3>
+            <h4>Analysises</h4>
             <?= Html::a('new', ['/analysis/new'], ['class'=>'btn btn-primary btn-xs']) ?>
         </div>      
     </div>  

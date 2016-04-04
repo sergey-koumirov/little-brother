@@ -18,7 +18,8 @@
         "yiisoft/yii2": ">=2.0.5",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-        "resque/yii2-resque": "dev-master"
+        "resque/yii2-resque": "dev-master",
+        "3rdpartyeve/phealng": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

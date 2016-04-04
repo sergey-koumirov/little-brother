@@ -12,6 +12,6 @@ class Analysis extends ActiveRecord{
             ['date_from', 'required'],
             ['date_to', 'required'],
         ];
-    }   
+    }
     
 }
