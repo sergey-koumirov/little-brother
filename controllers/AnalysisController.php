@@ -28,9 +28,6 @@ class AnalysisController extends Controller
     }
     
     public function actionView($id){
-        
-//        \Yii::$app->resque->createJob('character', 'CharacterWorker', $args = ['id' => $id]);
-        
         $model = Analysis::findOne($id);
         return $this->render('view', ['model'=>$model]);
     }

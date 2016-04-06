@@ -4,6 +4,7 @@ namespace app\components;
 
 use Pheal\Pheal;
 use Pheal\Core\Config;
+use app\models\Character;
 
 class CharacterWorker{
 
@@ -11,21 +12,43 @@ class CharacterWorker{
     }
 
     public function perform(){
-        
         echo "CharacterWorker.perform\n";
-        Config::getInstance()->cache = new \Pheal\Cache\FileStorage('/tmp/phealcache/');
+        Config::getInstance()->cache = new \Pheal\Cache\FileStorage('/tmp/');
         $pheal = new Pheal('', '', "eve");
-        try {
-            $response = $pheal->CharacterInfo(array("characterID" => $characterID));
-            
-            
-            
-        } catch (\Pheal\Exceptions\PhealException $e) {
-            echo sprintf( "an exception was caught! Type: %s Message: %s", get_class($e), $e->getMessage() );
-        }
-        
-        //print_r($this->args);
-        //print($this->args['id']);
+        do {
+            $query = (new \yii\db\Query())->from('characters')->where('hour(timediff(now(), updated_at))>48 or updated_at is null');
+            $outdatedCharactersCnt = $query->count();
+            if( $outdatedCharactersCnt>0 ){
+                foreach( 
+                    $chrs = Character::find()
+                                ->where('hour(timediff(now(), updated_at))>48 or updated_at is null')
+                                ->batch(10) as $batch
+                ){
+                    foreach( $batch as $record ){
+                        
+                        try {
+                            $response = $pheal->CharacterInfo(["characterID" => $record->character_id]);
+                            echo($response->characterName."\n");
+                            $record->updateEmployment($record->character_id, $response->employmentHistory); 
+                            
+                            $record->name = $response->characterName;
+                            $record->updated_at = date('Y-m-d H:i:s');
+                            $record->save();
+                            
+                            usleep(100000);        
+                        } catch (\Pheal\Exceptions\PhealException $e) {
+                            echo("Error: ".$e->getCode()."\n");
+                            if($e->getCode() == 400){
+                                $record->delete();
+                                echo("  deleted\n");                            
+                            }
+                            usleep(100000);
+                        }
+                        
+                    }
+                }                    
+            }
+        }while($outdatedCharactersCnt>0); 
     }
 
     public function tearDown(){
