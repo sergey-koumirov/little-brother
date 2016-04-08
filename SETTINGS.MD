@@ -56,3 +56,12 @@ QUEUE=* ./yii resque start
 
 6. eve api 
 mkdir /tmp/phealcache
+
+
+7. select * from alliances
+order by
+	alliance_id;
+
+delete from alliances where alliance_id<99000006;
+delete from corporation_history;
+update corporations set update_at=null;

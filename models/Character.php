@@ -9,6 +9,11 @@ class Character extends ActiveRecord{
         return 'characters';
     }
     
+    public static function outdatedCnt(){
+        $query = (new \yii\db\Query())->from('characters')->where('hour(timediff(now(), updated_at))>48 or updated_at is null');
+        return $query->count();
+    }
+    
     public function updateEmployment($character_id, $employmentHistory ){
         $cnt = count($employmentHistory);
         for($i=0; $i<$cnt; $i++){

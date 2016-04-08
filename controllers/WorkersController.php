@@ -12,18 +12,22 @@ use yii\web\Controller;
 
 use Pheal\Pheal;
 use Pheal\Core\Config;
+use app\models\Character;
+use app\models\Corporation;
 
 
 class WorkersController extends Controller{
     //put your code here
     public function actionIndex(){
-        $query = (new \yii\db\Query())->from('characters')->where('hour(timediff(now(), updated_at))>48 or updated_at is null');
-        $outdatedCharactersCnt = $query->count();
-        return $this->render('index', ['outdatedCharactersCnt'=>$outdatedCharactersCnt]);
+        return $this->render('index', [
+            'outdatedCharactersCnt'=>Character::outdatedCnt(),
+            'outdatedCorporationsCnt'=>Corporation::outdatedCnt()
+        ]);
     }
     
     public function actionRun(){
-        \Yii::$app->resque->createJob('character', 'CharacterWorker', $args = []);
+        \Yii::$app->resque->createJob('api', 'CharacterWorker', $args = []);
+        \Yii::$app->resque->createJob('api', 'CorporationWorker', $args = []);
         return $this->redirect(['workers/index']);
     }
 }

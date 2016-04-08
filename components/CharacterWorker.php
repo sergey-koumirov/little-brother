@@ -16,8 +16,7 @@ class CharacterWorker{
         Config::getInstance()->cache = new \Pheal\Cache\FileStorage('/tmp/');
         $pheal = new Pheal('', '', "eve");
         do {
-            $query = (new \yii\db\Query())->from('characters')->where('hour(timediff(now(), updated_at))>48 or updated_at is null');
-            $outdatedCharactersCnt = $query->count();
+            $outdatedCharactersCnt = Character::outdatedCnt();
             if( $outdatedCharactersCnt>0 ){
                 foreach( 
                     $chrs = Character::find()
@@ -49,6 +48,7 @@ class CharacterWorker{
                 }                    
             }
         }while($outdatedCharactersCnt>0); 
+        echo "CharacterWorker.done\n";
     }
 
     public function tearDown(){
