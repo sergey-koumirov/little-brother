@@ -31,7 +31,7 @@ class Corporation extends ActiveRecord{
             '         left join corporations c on c.corporation_id=ch.corporation_id '.
             '  where hour(timediff(now(), c.updated_at))>48 or c.updated_at is null '.
             '  order by ch.corporation_id desc '.    
-            '  limit 5'
+            '  limit 10'
         );
         return $command->queryAll();
     }
@@ -65,21 +65,14 @@ class Corporation extends ActiveRecord{
     }
     
     private function createHistoryRecords($raws){
-        foreach($raws as $raw){
-            $alliance = Alliance::find()->where(['name' => $raw[0]])->one();
-            
-            if($alliance==null && $raw[3]){
-                $min_id = Alliance::find()->min('alliance_id');                 
-                if($min_id > 99000000 || $min_id==null){
-                    $min_id = 98000000; 
-                }else{
-                    $min_id = $min_id - 1; 
-                }                
-                $alliance = new Alliance;
-                $alliance->name = $raw[0];
-                $alliance->alliance_id = $min_id;
-                $alliance->save();
-            }
+        $cnt = count($raws);
+        for($i=0; $i<$cnt; $i++){
+        //foreach($raws as $raw){
+            $raw = $raws[$i];            
+        
+            $alliance_to = ($i<=0 ? null : Alliance::byName($raws[$i-1][0], $raws[$i-1][3]) );
+            $alliance = Alliance::byName($raw[0], $raw[3]);
+            $alliance_from = ($i>=$cnt-1 ? null : Alliance::byName($raws[$i+1][0], $raws[$i+1][3]) );
             
             if($alliance != null){
                 echo "    ".$raw[0].": ".$raw[1]." - ".$raw[2]." ... ".$raw[3]."\n";
@@ -91,7 +84,10 @@ class Corporation extends ActiveRecord{
                 ])->one();
                 if($hrecord==null){
                     $hrecord = new CorporationHistory;
+                    $hrecord->corporation_id = $this->corporation_id;
+                    $hrecord->alliance_from_id = ($alliance_from==null ? null : $alliance_from->alliance_id);
                     $hrecord->alliance_id = $alliance->alliance_id;
+                    $hrecord->alliance_to_id = ($alliance_to==null ? null : $alliance_to->alliance_id);
                     $hrecord->date_from = $raw[1];
                     $hrecord->date_to = $raw[2];
                     $hrecord->save();

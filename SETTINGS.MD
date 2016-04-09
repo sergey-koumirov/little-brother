@@ -58,10 +58,28 @@ QUEUE=* ./yii resque start
 mkdir /tmp/phealcache
 
 
-7. select * from alliances
+7. clear corp history
+select * from alliances
 order by
 	alliance_id;
 
 delete from alliances where alliance_id<99000006;
 delete from corporation_history;
-update corporations set update_at=null;
+update corporations set updated_at=null;
+
+select c.*, rf.name as fname, rc.name as cname, rt.name as tname
+  from characters c
+         left join character_history ch on ch.character_id = c.character_id
+         left join corporations rf on ch.corporation_from_id=rf.corporation_id
+         left join corporations rc on ch.corporation_id=rc.corporation_id
+         left join corporations rt on ch.corporation_to_id=rt.corporation_id
+  where c.name = 'von Susla'
+
+select c.*, rf.name as fname, ch.date_from, rc.name as cname, ch.date_to, rt.name as tname
+  from corporations c
+         left join corporation_history ch on ch.corporation_id = c.corporation_id
+         left join alliances rf on ch.alliance_from_id=rf.alliance_id
+         left join alliances rc on ch.alliance_id=rc.alliance_id
+         left join alliances rt on ch.alliance_to_id=rt.alliance_id
+#  where c.name = 'P.A.N.D.A.'
+  where c.name = 'horizons'

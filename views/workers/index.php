@@ -10,9 +10,12 @@ use app\models\Alliance;
         <div class="col-sm-6">
             <h4>Workers <?= date('Y-m-d H:i:s') ?> <?= Alliance::updateAllianceList() ?></h4>
         </div>      
-        <div class="col-sm-1">
-            <a href="<?= Url::to(['workers/run']) ?>" class="btn btn-primary">Run workers</a>
-        </div>      
+        <div class="col-sm-2">
+            <a href="<?= Url::to(['workers/run-character-worker']) ?>" class="btn btn-primary">Run Character worker</a>
+        </div>
+        <div class="col-sm-2">
+            <a href="<?= Url::to(['workers/run-corporation-worker']) ?>" class="btn btn-primary">Run Corporation worker</a>
+        </div>
 
     </div>  
     <div class="row">

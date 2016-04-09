@@ -38,4 +38,23 @@ class Alliance extends ActiveRecord{
         }
     }
     
+    public static function byName($name, $is_closed){
+        $alliance = Alliance::find()->where(['name' => $name])->one();
+            
+        if($alliance==null && $is_closed){
+            $min_id = Alliance::find()->min('alliance_id');                 
+            if($min_id > 99000000 || $min_id==null){
+                $min_id = 98000000; 
+            }else{
+                $min_id = $min_id - 1; 
+            }                
+            $alliance = new Alliance;
+            $alliance->name = $name;
+            $alliance->alliance_id = $min_id;
+            $alliance->save();
+        }
+        
+        return $alliance;
+    }
+    
 }

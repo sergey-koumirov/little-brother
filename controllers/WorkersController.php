@@ -25,8 +25,12 @@ class WorkersController extends Controller{
         ]);
     }
     
-    public function actionRun(){
+    public function actionRunCharacterWorker(){
         \Yii::$app->resque->createJob('api', 'CharacterWorker', $args = []);
+        return $this->redirect(['workers/index']);
+    }
+    
+    public function actionRunCorporationWorker(){
         \Yii::$app->resque->createJob('api', 'CorporationWorker', $args = []);
         return $this->redirect(['workers/index']);
     }

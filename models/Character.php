@@ -33,6 +33,10 @@ class Character extends ActiveRecord{
                 $model->corporation_id = $currId;
                 $model->corporation_to_id = $toId;
                 $model->save();
+            }elseif($model->date_to != $toDate){
+                $model->date_to = $toDate;
+                $model->corporation_to_id = $toId;
+                $model->save();
             }
         }
         foreach($employmentHistory as $corpRec){
