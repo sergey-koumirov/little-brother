@@ -49,6 +49,7 @@ $config = [
                 '<controller:[\w-]+>/<id:\d+>/view'   => '<controller>/view',
                 '<controller:[\w-]+>/<id:\d+>/data'   => '<controller>/data',
                 '<controller:[\w-]+>/index' => '<controller>/index',                
+                '<controller>/search' => '<controller>/search',
             ]
         ],      
         'resque' => [

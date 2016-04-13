@@ -20,6 +20,8 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title>Little Brother is ignoring you</title>
     <?php $this->head() ?>
+    <link href="/js/jquery-ui/jquery-ui.css" rel="stylesheet">
+    <script src="/js/jquery-ui/jquery-ui.min.js"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>
