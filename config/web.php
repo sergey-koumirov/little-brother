@@ -50,6 +50,8 @@ $config = [
                 '<controller:[\w-]+>/<id:\d+>/data'   => '<controller>/data',
                 '<controller:[\w-]+>/index' => '<controller>/index',                
                 '<controller>/search' => '<controller>/search',
+                'analysis/<id:\d+>/add-entity'   => 'analysis/add-entity',
+                'analysis/<id:\d+>/delete-entity'   => 'analysis/delete-entity',
             ]
         ],      
         'resque' => [

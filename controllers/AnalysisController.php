@@ -6,6 +6,7 @@ use yii\web\Controller;
 use app\models\Analysis;
 use app\models\Alliance;
 use app\models\Corporation;
+use app\models\AnalysisEntity;
 
 class AnalysisController extends Controller
 {
@@ -31,7 +32,10 @@ class AnalysisController extends Controller
     
     public function actionView($id){
         $model = Analysis::findOne($id);
-        return $this->render('view', ['model'=>$model]);
+        
+        $entities = AnalysisEntity::find()->all();
+        
+        return $this->render('view', ['model'=>$model, 'entities' => $entities]);
     }
     
     public function actionUpdate($id){
@@ -75,6 +79,29 @@ class AnalysisController extends Controller
         }
         
         return $result;
+    }
+    
+    public function actionAddEntity($id){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $request = \Yii::$app->request;
+        
+        $model = new AnalysisEntity;
+        $model->analysis_id = $id;
+        $model->entity_type = $request->get('entity_type');
+        $model->entity_id = $request->get('entity_id');
+        $model->entity_role = 'center';
+        $model->save();
+        
+        return ['message'=>'ok', 'model'=>$model ];
+    }
+    
+    public function actionDeleteEntity($id){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $request = \Yii::$app->request;
+        $model = AnalysisEntity::find()->where(['analysis_id'=>$id, 'id'=> $request->get('delete_id')])->one();
+        $model->delete();
+        return ['message'=>'ok'];
     }
 }
 

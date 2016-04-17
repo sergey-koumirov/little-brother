@@ -5,12 +5,21 @@ use yii\helpers\Url;
 ?>
 
 <script>
+    var removeEntity = function(id){
+        $.ajax( '<?= Url::to(['analysis/delete-entity','id'=>$model->id ]) ?>?delete_id='+id )
+            .done(function(response) {
+                $('#entity-'+id).remove();
+            })
+            .fail(function(response) {
+                console.debug( "removeEntity: error", response );
+            }); 
+    }
+    
     $(function() {
         $( "#selector" ).autocomplete({
             source: "/analysis/search",
             minLength: 3,
             select: function( event, ui ) {
-                console.debug(ui);
                 $("#selected_id").val(ui.item.id);
                 $("#selected_type").val(ui.item.type);
                 $("#selector").val("[" + ui.item.type + ']: ' + ui.item.name);
@@ -21,6 +30,25 @@ use yii\helpers\Url;
               .append( "<a>[" + item.type + ']: ' + item.name + "</a>" )
               .appendTo( ul );
         };
+        
+        $( "#add_entity" ).click(function(){
+            var base_add_url = '<?= Url::to(['analysis/add-entity','id'=>$model->id ]) ?>',
+                entityType = $("#selected_type").val(),
+                entityId = $("#selected_id").val();
+            
+            if(!!entityType && !!entityId){
+                $.ajax( base_add_url + '?entity_type='+entityType+'&entity_id='+entityId )
+                    .done(function(response) {
+                        console.debug(response);
+                        var m = response.model;
+                        $('ul.entities').append('<li id="entity-'+m.id+'">['+m.entity_type+']: '+m.entity.name+' <a href="javascript: removeEntity('+m.id+');">X</a></li>');
+                    })
+                    .fail(function() {
+                        console.debug( "error" );
+                    });    
+            }
+        });
+        
     });
 </script>
 
@@ -44,9 +72,17 @@ use yii\helpers\Url;
         <input id="selected_id" type="hidden">
         <input id="selected_type" type="hidden">
         <input id="selector" class="form-control" type="text" placeholder="Type corp or alliance name">
+        <ul class="entities">
+            <?php foreach($entities as $entity){ ?>
+            <li id="entity-<?= $entity->id ?>">
+                [<?= $entity->entity_type ?>]: <?= $entity->entity->name ?>
+                <a href="javascript: removeEntity(<?= $entity->id ?>);">X</a>
+            </li>
+            <?php } ?>
+        </ul>
     </div>
     <div class="col-sm-1">
-        <button class="btn btn-primary">+</button>
+        <button id="add_entity" class="btn btn-primary">+</button>            
     </div>
 </div>
 
