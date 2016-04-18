@@ -61,19 +61,32 @@ class AnalysisController extends Controller
         return $data;
     }
     
-    public function actionSearch(){
+    public function actionSearch($id){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         $request = \Yii::$app->request;
         $term = '%'.$request->get('term').'%';
         
-        $result = array();
-        $alliances = Alliance::find()->where("name like :name",['name'=>$term])->orderBy('name')->limit(5)->all();
+        $alliances = Alliance::find()
+                        ->where(
+                            "name like :name and alliance_id not in (select entity_id from analysis_entities where analysis_id = :analysis_id and entity_type='alliance')",
+                            ['analysis_id'=>$id, 'name'=>$term]
+                        )
+                        ->orderBy('name')
+                        ->limit(5)
+                        ->all();
         foreach($alliances as $alliance){
             $result[] = ['name'=>$alliance->name, 'type'=>'alliance', 'id'=>$alliance->alliance_id];
         }
         
-        $corporations = Corporation::find()->where("name like :name",['name'=>$term])->orderBy('name')->limit(5)->all();
+        $corporations = Corporation::find()
+                            ->where(
+                                "name like :name and corporation_id not in (select entity_id from analysis_entities where analysis_id = :analysis_id and entity_type='corp')",
+                                ['analysis_id'=>$id, 'name'=>$term]
+                            )
+                            ->orderBy('name')
+                            ->limit(5)
+                            ->all();
         foreach($corporations as $corporation){
             $result[] = ['name'=>$corporation->name, 'type'=>'corp', 'id'=>$corporation->corporation_id];
         }

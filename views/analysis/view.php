@@ -17,7 +17,7 @@ use yii\helpers\Url;
     
     $(function() {
         $( "#selector" ).autocomplete({
-            source: "/analysis/search",
+            source: '<?= Url::to(['analysis/search','id'=>$model->id ]) ?>',
             minLength: 3,
             select: function( event, ui ) {
                 $("#selected_id").val(ui.item.id);
@@ -42,6 +42,9 @@ use yii\helpers\Url;
                         console.debug(response);
                         var m = response.model;
                         $('ul.entities').append('<li id="entity-'+m.id+'">['+m.entity_type+']: '+m.entity.name+' <a href="javascript: removeEntity('+m.id+');">X</a></li>');
+                        $("#selected_type").val(null);
+                        $("#selected_id").val(null);
+                        $("#selector").val(null);
                     })
                     .fail(function() {
                         console.debug( "error" );
