@@ -36,8 +36,7 @@ class CharacterWorker{
                             
                             usleep(100000);        
                         } catch (\Pheal\Exceptions\PhealException $e) {
-                            echo("Error: ".$e->getCode()."\n");
-                            if($e->getCode() == 400){
+                            if($e->getCode() == 400 || $e->getCode() == 500){
                                 $record->delete();
                                 echo("  deleted\n");                            
                             }

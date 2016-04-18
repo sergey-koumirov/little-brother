@@ -88,7 +88,7 @@ class Corporation extends ActiveRecord{
                     $hrecord->alliance_from_id = ($alliance_from==null ? null : $alliance_from->alliance_id);
                     $hrecord->alliance_id = $alliance->alliance_id;
                     $hrecord->alliance_to_id = ($alliance_to==null ? null : $alliance_to->alliance_id);
-                    $hrecord->date_from = $raw[1];
+                    $hrecord->date_from = ($raw[1] == "Unknown" ? "2000-01-01" : $raw[1]);
                     $hrecord->date_to = $raw[2];
                     $hrecord->save();
                 }elseif($hrecord->date_to != $raw[2]){
