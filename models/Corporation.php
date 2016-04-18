@@ -40,6 +40,7 @@ class Corporation extends ActiveRecord{
         $ch = curl_init();
         $timeout = 5;
         $url = "https://gate.eveonline.com/Corporation/".curl_escape($ch,$this->name)."/CorporationInfoPanel?tab=AllianceHistory";
+        //echo $url."\n";
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);

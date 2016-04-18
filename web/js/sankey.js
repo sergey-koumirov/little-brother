@@ -110,7 +110,7 @@
                       direction: 0,  // rightwards
                       layeringOption: go.LayeredDigraphLayout.LayerOptimalLinkLength,
                       packOption: go.LayeredDigraphLayout.PackStraighten || go.LayeredDigraphLayout.PackMedian,
-                      layerSpacing: 150,  // lots of space between layers, for nicer thick links
+                      layerSpacing: 50,  // lots of space between layers, for nicer thick links
                       columnSpacing: 1
                     })
         });

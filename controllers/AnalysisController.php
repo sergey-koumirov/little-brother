@@ -105,16 +105,22 @@ class AnalysisController extends Controller
         $model->entity_id = $request->get('entity_id');
         $model->entity_role = 'center';
         $model->save();
+
+        $record = Analysis::findOne($id);
         
-        return ['message'=>'ok', 'model'=>$model ];
+        return ['message'=>'ok', 'model'=>$model, 'data' => $record->analysisData() ];
     }
     
     public function actionDeleteEntity($id){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
         $request = \Yii::$app->request;
         $model = AnalysisEntity::find()->where(['analysis_id'=>$id, 'id'=> $request->get('delete_id')])->one();
         $model->delete();
-        return ['message'=>'ok'];
+        
+        $record = Analysis::findOne($id);
+
+        return ['message'=>'ok', 'data'=> $record->analysisData()];
     }
 }
 

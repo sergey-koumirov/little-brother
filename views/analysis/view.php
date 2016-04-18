@@ -3,12 +3,15 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 ?>
+<script src="/js/go.js" charset="utf-8"></script>
+<script src="/js/sankey.js"></script>
 
 <script>
     var removeEntity = function(id){
         $.ajax( '<?= Url::to(['analysis/delete-entity','id'=>$model->id ]) ?>?delete_id='+id )
             .done(function(response) {
                 $('#entity-'+id).remove();
+                myDiagram.model = go.Model.fromJson(response.data);
             })
             .fail(function(response) {
                 console.debug( "removeEntity: error", response );
@@ -45,6 +48,8 @@ use yii\helpers\Url;
                         $("#selected_type").val(null);
                         $("#selected_id").val(null);
                         $("#selector").val(null);
+
+                        myDiagram.model = go.Model.fromJson(response.data);
                     })
                     .fail(function() {
                         console.debug( "error" );
@@ -53,6 +58,11 @@ use yii\helpers\Url;
         });
         
     });
+
+    $.get( "<?= Url::to(['analysis/data','id'=>$model->id]) ?>", function( data ) {
+        myDiagram.model = go.Model.fromJson(data);
+    });
+
 </script>
 
 
@@ -89,18 +99,8 @@ use yii\helpers\Url;
     </div>
 </div>
 
-<script src="/js/go.js" charset="utf-8"></script>
-<script src="/js/sankey.js"></script>
-<script>
-    jQuery(document).ready(function(){
-        jQuery.get( "<?= Url::to(['analysis/data','id'=>$model->id]) ?>", function( data ) {
-            myDiagram.model = go.Model.fromJson(data);
-        });
-    });
-</script>
 
-
-<div id="myDiagramDiv" style="xbackground-color: #696969; border: solid 1px black; width: 90%; height: 400px"></div>
+<div id="myDiagramDiv" style="xbackground-color: #696969; border: solid 1px black; width: 1200px; height: 400px"></div>
 
 <script>
     init();

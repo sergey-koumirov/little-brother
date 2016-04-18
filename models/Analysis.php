@@ -28,8 +28,8 @@ class Analysis extends ActiveRecord{
                       left join corporations c on c.corporation_id = ch.corporation_id
                       left join corporations cf on cf.corporation_id = ch.corporation_from_id
                       left join corporation_history rf on rf.corporation_id = cf.corporation_id 
-                                                      and (rf.date_from is null or rf.date_from <= :start_date)
-                                                      and (rf.date_to is null or rf.date_to >= :start_date)
+                                                      and (rf.date_from is null or rf.date_from <= ch.date_from)
+                                                      and (rf.date_to is null or rf.date_to >= ch.date_from)
                       left join alliances af on af.alliance_id = rf.alliance_id
               where ch.corporation_id in (".$jids.")
                 and ch.date_from >= :start_date
@@ -55,13 +55,13 @@ class Analysis extends ActiveRecord{
                         left join corporations c on c.corporation_id = ch.corporation_id
                         left join corporations ct on ct.corporation_id = ch.corporation_to_id
                         left join corporation_history rt on rt.corporation_id = ct.corporation_id 
-                                                        and (rt.date_from is null or rt.date_from <= :end_date)
-                                                        and (rt.date_to is null or rt.date_to >= :end_date)
+                                                        and (rt.date_from is null or rt.date_from <= ch.date_to or ch.date_to is null and rt.date_to is null)
+                                                        and (rt.date_to is null or rt.date_to >= ch.date_to or ch.date_to is null and rt.date_to is null)
                         left join alliances at on at.alliance_id = rt.alliance_id
 
                 where ch.corporation_id in (".$jids.")
                   and ch.date_to >= :start_date
-                  and ch.date_to <= :end_date
+                  and (ch.date_to <= :end_date or ch.date_to is null)
                 group by c.name, at.name, ct.name, ch.corporation_from_id, ch.corporation_id  
                 order by count(1) desc", 
             [':start_date' => $this->date_from, ':end_date' => $this->date_to]
