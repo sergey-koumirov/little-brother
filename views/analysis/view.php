@@ -100,7 +100,7 @@ use yii\helpers\Url;
 </div>
 
 
-<div id="myDiagramDiv" style="xbackground-color: #696969; border: solid 1px black; width: 1200px; height: 400px"></div>
+<div id="myDiagramDiv" style="xbackground-color: #696969; border: solid 1px black; width: 1200px; height: 1000px"></div>
 
 <script>
     init();

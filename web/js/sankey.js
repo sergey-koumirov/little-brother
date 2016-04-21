@@ -100,8 +100,8 @@
 
     myDiagram =
       $(go.Diagram, "myDiagramDiv", {
-          allowHorizontalScroll: false,
-          allowVerticalScroll: false,
+          allowHorizontalScroll: true,
+          allowVerticalScroll: true,
           initialDocumentSpot: go.Spot.Center,
           initialViewportSpot: go.Spot.Center,
           initialAutoScale: go.Diagram.UniformToFill,
